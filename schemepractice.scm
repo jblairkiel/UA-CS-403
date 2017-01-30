@@ -38,6 +38,7 @@
 ( define L2 (append (map square L) L ))
 ( define L3 (append (map square L2) L2 ))
 ( define L4 (randomList 100))
+;( define LTree '( 10 (5 (3 () ()) (8 () ))) (17 (12 () ()) (21 () ())))
 
 ;\\Problems
 ;#1 Write a power function such that (power m n) returns m raised to the power n, where n is non-negative integer.
@@ -254,3 +255,124 @@
 	)
 )
 
+;
+; #8-11 BST Functions
+;
+
+;////////////////////////////////
+;/// BST HELPERS ////////////////
+;////////////////////////////////
+(define (data node) 
+	(if (null? node)
+		'()
+		(if (null? (car node))
+			'()
+			(car node)
+		)
+	)
+)
+
+(define (left node)
+	(if (null? node)
+		'()
+		(if (null? (cadr node))
+			'()
+			(cadr node)
+		)
+	)
+)
+
+(define (right node)
+	(if (null? node)
+		'()
+		(if (null? (caddr node))
+			'()
+			(caddr node)
+		)
+	)
+)
+
+; (maketree '(3 2 1))
+; (insert (car '(3 2 1)) (maketree (cdr '(3 2 1))) )
+; 
+( define (maketree L)
+	(if (null? L)
+		'()
+		(let ((T (maketree (fold-right cons '() (cdr L))) ))
+			(insert (car L) T)
+		)
+	)
+)
+
+( define (insert x T)
+	(if (null? T)
+		(list x '() '())
+		(if (null? (data T))
+			x
+			(if (= (data T) x)
+				(list (data T) (constree (left T)) (constree (right T)))
+				(if (< (data T) x)
+					(list (data T) (constree (left T)) (insert x (right T)))
+					(list (data T) (insert x (left T)) (constree (right T)))
+				)	
+			)
+		)
+	)
+)
+
+( define (constree T)
+	(if (null? T)
+		'()
+		(if (null? (left T))
+			(if (null? (right T))
+				(list (data T) '() '())
+				(list (data T) '() (constree (right T)))
+				
+			)
+			(if (null? (right T))
+				(list (data T) (constree (left T)) '())	
+				(list (data T) (constree (left T)) (constree (right T)))
+			)
+		)
+	)
+)
+
+( define (member? x T) 
+	(if (null? T)
+		#f
+		(if (eqv? (data T) x)
+			#t
+			(if (< (data T) x)
+				(member? x (right T))
+				(member? x (left T))
+			)
+		)
+	)
+)
+
+( define (removeNode x T)
+	(if (null? T)
+		'()
+		(if (eqv? (data T) x)
+			;do something
+			(if (null? (right T))
+				(if (null? (left T))
+					'()	
+					(constree (left T))
+				)
+				(list (data(right T)) (constree (left T)) (removeNode (data(right T)) (right T)))
+
+			)
+			(if (< (data T) x)
+				(list (data T) (constree (left T)) (removeNode x (right T)))
+				(list (data T) (removeNode x (left T)) (constree (right T)))
+			)
+		)	
+	)
+)
+
+;////////////////////////////////
+;/// BST VARS ///////////////////
+;////////////////////////////////
+( define smalltree (maketree l2))
+( define largetree (maketree l4))
