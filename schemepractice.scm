@@ -353,26 +353,97 @@
 ( define (removeNode x T)
 	(if (null? T)
 		'()
-		(if (eqv? (data T) x)
-			;do something
-			(if (null? (right T))
+		(if (null? (data T))
+			'()
+			(if (= (data T) x)
 				(if (null? (left T))
-					'()	
-					(constree (left T))
+					(if (null? (right T))
+						'()
+						(list (data (right T)) '() (removeNode (data (right T)) (right T)))
+					)
+					(if (null? (right T))
+						(list (data (left T)) (removeNode (data (left T)) (left T)) '())
+						(list (data (left T)) (removeNode (data (left T)) (left T)) (constree (right T)))
+					)
 				)
-				(list (data(right T)) (constree (left T)) (removeNode (data(right T)) (right T)))
-
+				(if (< (data T) x)
+					(list (data T) (constree (left T)) (removeNode x (right T)))
+					(list (data T) (removeNode x (left T)) (constree (right T)))
+				)	
 			)
-			(if (< (data T) x)
-				(list (data T) (constree (left T)) (removeNode x (right T)))
-				(list (data T) (removeNode x (left T)) (constree (right T)))
-			)
-		)	
+		)
 	)
 )
+
+;left root right
+( define (inorder T)
+	(if (null? T)
+		T
+		(append (append (inorder (left T)) (list (data T))) (inorder (right T)))
+	)
+)
+
+;root left right
+( define (preorder T)
+	(if (null? T)
+		T
+		(append (append (list (data T)) (preorder (left T))) (preorder (right T)))
+	)
+)
+
+;left right root
+( define (postorder T)
+	(if (null? T)
+		T
+		(append (append (postorder (left T)) (postorder (right T))) (list (data T)))
+	)
+)
+
 
 ;////////////////////////////////
 ;/// BST VARS ///////////////////
 ;////////////////////////////////
 ( define smalltree (maketree l2))
 ( define largetree (maketree l4))
+
+; #12 filter for (filter P L)
+; P = predicate evaluator (lambda (x) (> x 0))
+; L = list to be applied to 
+( define (filterFunc P L)
+	(if (null? L)
+		'()
+		(if (P (car L))
+			(cons (car L) (filterFunc P (cdr L)))
+			(filterFunc P (cdr L))
+		)
+	)
+)
+
+; #13 reject for (reject P L)
+; P = predicate evaluator (lambda (x) (> x 0))
+; L = list to be applied to 
+( define (reject P L)
+	(if (null? L)
+		'()
+		(if (P (car L))
+			(reject P (cdr L))
+			(cons (car L) (reject P (cdr L)))
+		)	
+	)
+)
+
+; #14 applyeach for (applyeach L1 L2) 
+; applies each function in L1 to the corresponding value in L2
+( define (applyeach L1 L2)
+	(applyeachHelper L1 L2 '())
+)
+
+( define (applyeachHelper L1 L2 LRet)
+	(if (null? L1)
+		LRet
+		(applyeachHelper 
+			(cdr L1) 
+			(cdr L2) 
+			(append LRet (list ((car L1) (car L2)))))
+	)
+)
