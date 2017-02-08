@@ -1,6 +1,13 @@
-;\\
-;Variables
-;\\
+;\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+;\\Variables\\\\\\\\\\\\\\\\\\\\\\\\
+;\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+; Prints a list of length(x), bounded randomly from (0 to x)
+; (randomlist 3)
+; (cons (2) (randomlist 2))
+; (cons (2) (cons (0) (randomlist 1)))
+; (cons (2) (cons (0) (cons (1) '())))
+; '( 2 0 1)
 ( define (randomList x)
 
 	(if (= x 0)
@@ -9,6 +16,14 @@
 	)
 )
 
+; Returns a list of the even numbers in a list
+; (printEvens '(4 10 3 5))
+; (cons 4 (printEvens '(10 3 5)))
+; (cons 4 (cons 10 (printEvens '(3 5))))
+; (cons 4 (cons 10 (printEvens '(5))))
+; (cons 4 (cons 10 (printEvens '())))
+; (cons 4 (cons 10 '()))
+; '(4 10)
 ( define (printEvens L)
 	(if (null? L)
 		'()	
@@ -19,6 +34,14 @@
 	)
 )
 
+;Returns a list of the odd numbers in a list
+; (printOdds '(3 6 10 1))
+; (cons 3 (printOdds '(6 10 1)))
+; (cons 3 (printOdds '(10 1)))
+; (cons 3 (printOdds '(1)))
+; (cons 3 (cons 1 (printOdds '())))
+; (cons 3 (cons 1 '()))
+; '(3 1)
 ( define (printOdds L)
 	(if (null? L)
 		'()
@@ -30,6 +53,9 @@
 
 )
 
+;Returns the maximum value of a list of numbers
+; (maxList '(1 2 3 4 5 6 7 8 9 10)
+; 10
 ( define (maxList L)
 	(apply max L)
 )
@@ -38,10 +64,21 @@
 ( define L2 (append (map square L) L ))
 ( define L3 (append (map square L2) L2 ))
 ( define L4 (randomList 100))
-;( define LTree '( 10 (5 (3 () ()) (8 () ))) (17 (12 () ()) (21 () ())))
+
+;\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+;\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+;\\BEGIN EXCERSISES\\\\\\\\\\\\\\\\\\
+;\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+;\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 ;\\Problems
 ;#1 Write a power function such that (power m n) returns m raised to the power n, where n is non-negative integer.
+; (powerfunction 3 2)
+; (powerhelper 3 2)
+; (* 3 (powerhelper 3 1))
+; (* 3 (* 3 (powerhelper 3 0)))
+; (* 3 (* 3 1))
+; 9
 ( define (powerfunction m n)
 	(powerhelper m n)
 )
@@ -55,6 +92,9 @@
 )
 
 ;#2 Write a log function such that (log m q) returns n such that (power m n) returns q.
+; (logfunction 3  9)
+; (loghelper 3 9)
+; (+ (log helper 
 ( define (logfunction m q)
 	(loghelper m q)
 )
@@ -68,6 +108,11 @@
 )
 
 ;#3 Write a comb function such that (comb n k) returns the number of combinations n-choose-k.
+; (comb 3 2)
+; (combhelper 3 2)
+; (* 3 (combhelper 3 1))
+; (* 3 (* 3 1))
+; 9
 ( define (comb n k)
 	(combhelper n k)
 )
@@ -137,6 +182,11 @@
 )
 
 ;iterates down the list to pick out the smallest element
+; (smallest '(2 3 1) 2)
+; (smallest '(3 1) 2)
+; (smallest '(1) 2)
+; (smallest '() 1)
+; 1
 ( define (smallest L A) 
 	(if (null? L)
 		A
@@ -148,6 +198,10 @@
 )
 
 ;removes the 'A' fro the list
+; (ss_remove '(5 3 1) 3)
+; (cons 5 (ss_remove '(3 1) 3))
+; (cons 5 1)
+; '( 5 1)
 ( define (ss_remove L A)
 	(if (null? L)
 		'()	
@@ -197,6 +251,12 @@
 	(cons (oddIndexes L) (cons (evenIndexes L) '()) )
 )
 
+; Resturns the odd indices for a list of numbers
+; (oddIndexes '(1 12 6 9))
+; (cons 1 (oddIndexes '(6 9)))
+; (cons 1 (cons 6 (oddIndexes '())))
+; (cons 1 (cons 6 '()))
+; '(1 6)
 ( define (oddIndexes L) 
 	(if (null? L)
 		'()
@@ -208,6 +268,11 @@
 			
 )
 
+; Returns the even indices for a list of numbers
+; (evenIndexes '(0 3 16 7 2))
+; (cons (3) (evenIndexes '(16 7 2))
+; (cons 3 (cons 7 '()))
+; '(3 7)
 ( define (evenIndexes L) 
 	(if (null? L)
 		'()
