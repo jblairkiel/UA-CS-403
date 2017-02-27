@@ -1,6 +1,6 @@
 ## UA-CS-403
 
-UA CS 403 Programming Languages class with Dr. Borie during 2017 Spring semester. Many of the practice problems in this repo can be found at [cs403.cs.ua.edu/spring2017/exercises.htm](https://cs403.cs.ua.edu/spring2017/exercises.htm).
+UA CS 403 Programming Languages class with Dr. Borie during 2017 Spring semester. Many of the practice problems in this repo can be found at [http://cs403.cs.ua.edu/spring2017/exercises.htm](http://cs403.cs.ua.edu/spring2017/exercises.htm).
 
 # Scheme
 
