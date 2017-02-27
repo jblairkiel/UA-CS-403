@@ -132,7 +132,7 @@ divide x y = (\a b -> a `div` b) x y
 sq x = (\a -> a*a) x
 pow x y = (\a b -> a*b) x y
 
---Exam 1
+-- 2017 Spring Exam 1
 
 -- #1 sequence s f n returns a list of length n that starts iwth the s such that each successive value is obtained by applying f to its predecessor
 -- (sequence 2 square 5) returns (2 4 16 256 65536)
@@ -169,19 +169,100 @@ mysqrt1 n = mysqrthelper1 n 1
 mysqrthelper1 n p = 
 	if ( p*p < n)
 		then 1 + (mysqrthelper1 n (p+1))
-		else 0
+		else 1
 
 --efficient
---mysqrt2 n = mysqrthelper2 n (n `quot` 2)
+mysqrt2 n = mysqrthelper2 n 0 n 
+
+
+mysqrthelper2 n p r = 
+	let m = ((p + r) `quot` 2)
+	in if ((sq m) > n) 
+		then mysqrthelper2 n p (m - 1)
+		else if ((sq (m + 1) <= n))
+			then mysqrthelper2 n (m + 1) r
+			else m
+-- #6 (isprime n) returns #t if the integer n is prime.
+-- (isprime 60) returns #f and (prime? 61) returns #t
+-- NOTE: Difficulty with sqrt type, mysqrt1 sometimes returns innacurate integer not double
+
+isprime n = isprimehelper n (mysqrt2 n)
+
+isprimehelper n 1 = True
+isprimehelper n p = 
+	if ((n `mod` p) == 0)
+		then False
+		else (isprimehelper n (p-1))
+
+-- #7 (factorize n) returns a list of all the prime factors whose product yields the non-negative integer n
+-- (factorize 360) returns (2 2 2 3 3 5)
+
+factorize 0 = []
+factorize n = mergesort(factorizehelper n (mysqrt2 n))
+
+factorizehelper n p = 
+	if (isprime n) || (p == 1)
+		then [n]
+		else if ((n `mod` p) == 0)
+			then (factorize (n `quot` p))++(factorize p)
+			else (factorizehelper n (p - 1))
+
+-- 2016 Fall Exam 2
+
+-- #1 (counter n (x:xs)) that returns the number of occurrences of value x in list ys
+-- counter 5 [2,4,5,7,3,5,8,5,0] returns 3
+
+counter :: Eq a => a-> [a] -> Integer
+
+counter n [] = 0
+counter n (x:xs) = 
+	if (x == n)
+		then 1 + (counter n xs)
+		else (counter n xs)
+
+-- #2 (partition p (x:xs)) that returns a pair of lists, the first list contains the values in xs that satisfies p and the second list contains the values that do not satify p
+-- partition (>4) [1,3,5,7,9,0,2,4,6,8] returns ([5,7,9,6,8],[1,3,0,2,4])
+
+partition :: (a-> Bool) -> [a] -> ([a],[a])
+
+partition p xs = ([x | x<-xs, p x],[x | x<-xs, not (p x)])
+
+
+-- #3 lazy eval with && and || next define &&& and ||| 
+
+--True && x = x
+--False && _ = False
+
+--True || _ = True
+
+-- #4 define add, sub and mult on natural numbers
+
+--data Natural = Zero | Successor Natural
+
+--add x Zero = x
+--add x (Successor y) = add (Successor x) y
 --
+--sub x Zero = x
+--sub Zero _ = Zero
+--sub (Successor x) (Successor y) = sub x y
 --
---mysqrthelper2 n p = 
---	if (p*p == n)
---		then p
---		else if (p*p < n) 
---			then if (p*p == n)
---				then p
---				else if(
---					then mysqrthelper2 n (p + (n `quot` (p `quot` 2)))
---					else p
---			else if (p*p mysqrthelper2 n (p - (n `quot` (p `quot` 2)))
+--mult _ Zero = Zero
+--mult x (Successor y) = add x (mult x y)
+
+-- #5 write a haskell function isperfect that returns true if n is positive integer that equals the sum of is smaller divisors
+-- isPerfect 28 = true (1+2+4+7+14=28) && isPerfect 32 = false (1+2+4+8+16 =31 ) 
+
+
+-- #6 rotations 'abcd' returns ["abcd", "bcda", "cdab", "dabc"]
+
+rotations :: [a] -> [[a]]
+rotations xs = map (\k -> drop k xs ++ take k xs) [0..length xs -1]
+
+-- #7 preorder t and postorder 5
+
+data Tree a = Node a [Tree a]
+
+t = Node 'M' [Node 'K' [Node 'Q' [],Node 'E'[]],Node 'X' [], Node 'H' [Node 'U' []]]
+
+preorder (Node r cs) = r:concat (map preorder cs)
+postorder (Node r cs) = concat(map postorder cs) ++ [r]
