@@ -11,7 +11,7 @@ My prefered method to write a function in scheme and remain sane is to balance t
 (define (count L)
 	(if (null? L)
 		0
-		+ 1 (count (cdr L))
+		(+ 1 (count (cdr L)))
 	)	
 )
 ```
