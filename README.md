@@ -1,6 +1,6 @@
 ## UA-CS-403
 
-UA CS 403 Programming Languages class with Dr. Borie during 2017 Spring semester. Many of the practice problems in this repo can be found at [CS-403 @ UA.EDU](https://cs403.cs.ua.edu/spring2017/exercises.htm).
+UA CS 403 Programming Languages class with Dr. Borie during 2017 Spring semester. Many of the practice problems in this repo can be found at [cs403.cs.ua.edu/spring2017/exercises.htm](https://cs403.cs.ua.edu/spring2017/exercises.htm).
 
 # Scheme
 
@@ -17,7 +17,7 @@ My prefered method to write a function in scheme and remain sane is to balance t
 ```
 
 Resources:
-* [Scheme Wikipedia] (https://en.wikipedia.org/wiki/Scheme_(programming_language)
+* [Scheme Wikipedia] (https://en.wikipedia.org/wiki/Scheme_(programming_language))
 * [MIT/GNU Scheme References] (https://gnu.org/software/mit-scheme/documentation/mit-scheme-ref/)
 * [Racket Scheme] (https://docs.racket-lang.org/guide/index.html)
 * [Racket Lambda Functions] (https://docs.racket-lang.org/guide/lambda.html)
@@ -29,7 +29,7 @@ GLHF
 Haskell is pure functional language (no side-effects).  It looks similiar to Scheme, but without the parenthesis and more built-in functions.  You must declare the function's return type and parameter types, and will make you want to pull your hair out.
 
 Resources:
-* [Haskell Wikipedia] (https://en.wikipedia.org/wiki/Haskell_(programming_language)
+* [Haskell Wikipedia] (https://en.wikipedia.org/wiki/Haskell_(programming_language))
 * [Official Haskell Documentation] (https://www.haskell.org/documentation)
 * ['Currying'] (https://wiki.haskell.org/Currying)
 * [Learn You a Haskell] (http://learnyouahaskell.com/chapters)
