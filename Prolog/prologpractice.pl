@@ -123,3 +123,12 @@ omit(X,[H|L],[H|R]) :-
 
 /*sort1(L,R)*/
 sort1(L,X):- permute2(L,X), ascend2(X), !.
+
+/*insertionsort2(L, R)*/
+insertionsort2([], []):- !.
+insertionsort2([X|L], S):- insertionsort2(L, S1), insert2(X, S1, S).
+
+/*insert2(x,L,R)*/
+insert2(X, [], [X]):- !.
+insert2(X, [X1|L1], [X, X1|L1]):- X=<X1, !.
+insert2(X, [X1|L1], [X1|L]):- insert2(X, L1, L).
