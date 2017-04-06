@@ -1,5 +1,7 @@
 "GNU Small Talk Exam 4"
 
+
+"Standard Node for Data Structures"
 Object subclass: #MyNode.
 MyNode instanceVariableNames: 'data next prev'.
 MyNode extend [
@@ -12,6 +14,7 @@ MyNode extend [
 	display [Transcript display: data; cr.]
 ]
 
+"Standard Queue: FIFO enqueue to back, dequeue front"
 Object subclass: #MyQueue.
 MyQueue instanceVariableNames: 'front back'.
 MyQueue extend [ 
@@ -27,7 +30,7 @@ MyQueue extend [
 			ifTrue: [front:= p. back:= p]
 			ifFalse: [back next: p. back:= p]
 	]
-	remove[
+	remove [
 		|Key|
 		front isNil ifTrue: [^nil].
 		Key:= front data.
@@ -44,6 +47,7 @@ MyQueue extend [
 ]
 
 
+"Standard Stack: FILO push to top, pop from top"
 Object subclass: #MyStack.
 MyStack instanceVariableNames: 'front back'.
 MyStack extend [
@@ -60,7 +64,7 @@ MyStack extend [
 			ifFalse: [p prev: back. back next: p. back:= p]
 	]
 	
-	remove[
+	remove [
 		|Key|
 		back isNil ifTrue: [^nil].
 		Key:= back data.
@@ -69,7 +73,7 @@ MyStack extend [
 		^Key
 	]
 
-	display[
+	display [
 		|p|
 		p:= front.
 		[p notNil] whileTrue: [Transcript display: p data. Transcript show: '=>'. p:= p next].
@@ -78,7 +82,61 @@ MyStack extend [
 
 ]
 
+"Deck Stack: push to top, popTop from top, popBottom from bottom"
+Object subclass: #MyDeck.
+MyDeck instanceVariableNames: 'top bottom count'.
+MyDeck extend [
+	top [^top]
+	bottom [^bottom]
+	count [Transcript show: 'Deck count is: '. Transcript display: count. Transcript cr]
+	top: t [top:= t]
+	bottom: b [bottom:= b]
+	count: c [count:= c]
 
+	push: Key [
+		|p|
+		p:= MyNode new data: Key.
+		top isNil
+			ifTrue: [bottom:= p. top:= p. count:= 1]
+			ifFalse: [p prev: top. top next: p. top:= p. count:= count + 1].
+	]
+	
+	popTop [
+		|Key|
+		top isNil ifTrue: [^nil].
+		Key:= top data.
+		top:= top prev.
+		top next: nil.
+		count:= count - 1.
+		Transcript show: 'Popping Top: '. 
+		Transcript display: Key.
+		Transcript cr.
+		^Key.
+	]
+
+	popBottom [ 
+		|Key|
+		bottom isNil ifTrue: [^nil].
+		Key:= bottom data.
+		bottom:= bottom next.
+		bottom prev: nil.
+		count:= count - 1.
+		Transcript show: 'Popping Bottom: '. 
+		Transcript display: Key.
+		Transcript cr.
+		^Key.
+	]	
+
+	display [
+		|p|
+		p:= bottom.
+		[p notNil] whileTrue: [Transcript display: p data. Transcript show: '=>'. p:= p next].
+		Transcript cr.
+	]
+	
+]
+
+"'Main' Calls"
 Transcript show: 'Queue:'.
 Transcript cr.
 q:= MyQueue new.
@@ -95,5 +153,18 @@ s insert: 10; insert: 30; insert: 50; insert: 70.
 s display.
 s remove.
 s display.
+Transcript cr.
+
+Transcript show: 'Deck:'.
+Transcript cr.
+d:= MyDeck new.
+d count.
+d push: 5; push: 10; push: 15; push: 20.
+d count.
+d display.
+d popTop.
+d display.
+d popBottom.
+d display.
 Transcript cr.
 
