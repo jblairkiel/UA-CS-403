@@ -136,7 +136,136 @@ MyDeck extend [
 	
 ]
 
+"BST: Contains BSTNode with Data,Left,Right"
+Object subclass: #BSTNode.
+BSTNode instanceVariableNames: 'data left right level'.
+BSTNode extend [
+
+	data [^data]
+	left [^left]
+	right [^right]
+	level [^level]
+	data: d [data:= d]
+	left: l [left:= l]
+	right: r [right:= r]
+	level: l [level:= l]
+
+	preorder [
+		Transcript show: ' '. Transcript display: data.
+		left notNil ifTrue: [ left preorder].
+		right notNil ifTrue: [ right preorder].
+	]
+
+	inorder [
+		left notNil ifTrue: [ left inorder].
+		Transcript show: ' '. Transcript display: data.
+		right notNil ifTrue: [ right inorder].
+	]
+
+	postorder [
+		left notNil ifTrue: [ left postorder].
+		right notNil ifTrue: [ right postorder].
+		Transcript show: ' '. Transcript display: data.
+	]
+
+	levelorder: l [
+		(level == l) ifTrue: [Transcript show: ' '. Transcript display: data].
+		left notNil ifTrue: [ left levelorder: l].
+		right notNil ifTrue: [ right levelorder: l].
+	]
+]
+
+Object subclass: #BST.
+BST instanceVariableNames: 'root height'.
+BST extend [
+	root [^root]
+	root: r [root:= r]
+	height [^height]
+	height: h [height:= h]
+
+	insert: Key [
+		|n p l|
+		l:= 1.
+		n:= BSTNode new data: Key.
+		p:= root.
+		root isNil
+			ifTrue: [n level: 1. root:= n. height:= l.]
+			ifFalse: [ [n notNil] whileTrue:
+						[(p data > Key)
+						ifTrue: [(p left isNil)
+								ifTrue: [l:= l + 1. n level: l. p left: n. n:= nil. (l > height) ifTrue: [ height:= l]. ]
+								ifFalse: [l:= l + 1. p:= p left.]
+							]
+						ifFalse: [(p right isNil)
+								ifTrue: [l:= l + 1. n level: l. p right: n. n:= nil. (l > height) ifTrue: [ height:= l]. ]
+								ifFalse: [l:= l + 1. p:= p right.]
+							].
+						]
+				]
+	]
+
+	remove: Key [
+		|n p|
+		n:= BSTNode new data: Key.
+		p:= root.
+		root isNil
+			ifTrue: [root:= n.]
+			ifFalse: [ [n notNil] whileTrue:
+						[(p data > Key)
+						ifTrue: [(p left isNil)
+								ifTrue: [p left: n. n:= nil]
+								ifFalse: [p:= p left].
+							]
+						ifFalse: [(p right isNil)
+								ifTrue: [p right: n. n:= nil]
+								ifFalse: [p:= p right].
+							].
+						]
+				]
+	]
+
+	inorder[
+		Transcript show: 'Inorder of Tree: '.
+		root inorder.
+		Transcript cr.
+	]
+
+	preorder [
+		Transcript show: 'Preorder of Tree: '.
+		root preorder.
+		Transcript cr.
+	]
+
+	postorder [
+		Transcript show: 'Postorder of Tree: '.
+		root postorder.
+		Transcript cr.
+	]
+
+	levelorder [ 
+		|h|
+		h:= height.
+		Transcript show: 'Levelorder of Tree: '.
+		Transcript cr.
+		1 to: h do: [:x | Transcript show: 'Level '. Transcript display: x. Transcript show: ':'. root levelorder: x . Transcript cr.].
+		Transcript cr.
+	]
+
+	
+]
+
 "'Main' Calls"
+Transcript show: 'BST:'.
+Transcript cr.
+t:= BST new.
+t insert: 5; insert: 10; insert: 18; insert: 7; insert: 20; insert: 15.
+t preorder.
+t inorder.
+t postorder.
+"t root levelorder: 3."
+t levelorder.
+
+"
 Transcript show: 'Queue:'.
 Transcript cr.
 q:= MyQueue new.
@@ -167,4 +296,4 @@ d display.
 d popBottom.
 d display.
 Transcript cr.
-
+"
