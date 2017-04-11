@@ -433,7 +433,6 @@ MyMath extend [
 
 "'Main' Calls"
 
-"
 Transcript cr.
 Transcript show: 'MorseChar'.
 Transcript cr.
@@ -573,7 +572,6 @@ Transcript cr.
 Transcript display: a. Transcript show: ' ^ '. Transcript display: b. Transcript show: ' = '.
 x:= m pow.
 Transcript cr.
-"
 
 Transcript cr.
 Transcript show: 'Generated Lists: '.
