@@ -432,6 +432,8 @@ MyMath extend [
 ]
 
 "'Main' Calls"
+
+"
 Transcript cr.
 Transcript show: 'MorseChar'.
 Transcript cr.
@@ -445,9 +447,6 @@ Transcript cr.
 b:= MyMorse new: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam gravida auctor pulvinar. Integer erat odio, ultrices ut diam sit amet, porttitor pretium enim. Mauris a augue augue. Aenean viverra rhoncus enim a pulvinar. Nulla id sem justo. Suspendisse potenti. Duis eget enim in sem sodales fringilla id vitae nisi. Aenean tortor odio, posuere sit amet tincidunt eget, pretium sed felis. Phasellus enim mauris, laoreet non orci ut, efficitur dignissim nibh. In id aliquet tellus. Sed a tincidunt augue. Pellentesque eu dignissim metus. Mauris venenatis pulvinar enim vitae rhoncus.'.
 b display.
 Transcript cr.
-
-
-"
 
 
 Transcript cr.
@@ -574,10 +573,69 @@ Transcript cr.
 Transcript display: a. Transcript show: ' ^ '. Transcript display: b. Transcript show: ' = '.
 x:= m pow.
 Transcript cr.
+"
 
-Transcript show: 'Generated List: '.
+Transcript cr.
+Transcript show: 'Generated Lists: '.
 Transcript cr.
 col:= ((1 to: 25) select: [:x| (x*x) > 3]) collect: [:x | (x*2)].
+col2:= ((1 to: 25) select: [:x| (x*x) > 3]) collect: [:x | (x*3)].
 Transcript display: col.
 Transcript cr.
-"
+Transcript cr.
+Transcript display: col2.
+Transcript cr.
+
+Transcript cr.
+Transcript show: 'Inspecting Generated List '.
+Transcript cr.
+col inspect.
+Transcript cr.
+
+Transcript cr.
+Transcript show: 'Detecting Generated List with invalid boolean'.
+Transcript cr.
+col detect: [:x | x<0 ] ifNone: [Transcript show: 'None detected'].
+Transcript cr.
+Transcript cr.
+Transcript show: 'Detecting Generated List with valid boolean'.
+Transcript cr.
+c:= col detect: [:x | x>10 ] ifNone: [Transcript show: 'None detected'].
+Transcript display: c.
+Transcript cr.
+ 
+Transcript cr.
+Transcript show: 'Collecting Generated List x*x'.
+Transcript cr.
+d:= col collect: [:x | x*x].
+Transcript display: d.
+Transcript cr.
+
+Transcript cr.
+Transcript show: 'Selecting Generated List x % 3 = 0 (This is \\ in smalltalk)'.
+Transcript cr.
+e:= col select: [:x | x \\ 3 = 0 ].
+Transcript display: e.
+Transcript cr.
+
+Transcript cr.
+Transcript show: 'Rejecting Generated List x % 3 = 0 (This is \\ in smalltalk)'.
+Transcript cr.
+f:= col reject: [:x | x \\ 3 = 0 ].
+Transcript display: f.
+Transcript cr.
+
+
+Transcript cr.
+Transcript show: 'Collecting col2 if in col '.
+Transcript cr.
+g:= col select: [:x | col2 includes: x].
+Transcript display: g.
+Transcript cr.
+
+Transcript cr.
+Transcript show: 'Injecting Generated List with a+b: '.
+Transcript cr.
+Transcript display: (col inject: 0 into: [:a :b | a+b]); cr.
+Transcript cr.
+
