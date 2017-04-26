@@ -79,6 +79,93 @@ MyQueue2 class extend [
 	new [ ^super new init]
 ]
 
+Object subclass: #MorseChar.
+MorseChar instanceVariableNames: 'val'.
+MorseChar extend [
+	init: Key [
+		(Key = 'A' or: [Key = 'a']) ifTrue: [val:= '.-'].
+		(Key = 'B' or: [Key = 'b']) ifTrue: [val:= '-...'].
+		(Key = 'C' or: [Key = 'c']) ifTrue: [val:= '-.-.'].
+		(Key = 'D' or: [Key = 'd']) ifTrue: [val:= '-..'].
+		(Key = 'E' or: [Key = 'e']) ifTrue: [val:= '.'].
+		(Key = 'F' or: [Key = 'f']) ifTrue: [val:= '..-.'].
+		(Key = 'G' or: [Key = 'g']) ifTrue: [val:= '--.'].
+		(Key = 'H' or: [Key = 'h']) ifTrue: [val:= '....'].
+		(Key = 'I' or: [Key = 'i']) ifTrue: [val:= '..'].
+		(Key = 'J' or: [Key = 'j']) ifTrue: [val:= '.---'].
+		(Key = 'K' or: [Key = 'k']) ifTrue: [val:= '-.-'].
+		(Key = 'L' or: [Key = 'l']) ifTrue: [val:= '.-..'].
+		(Key = 'M' or: [Key = 'm']) ifTrue: [val:= '--'].
+		(Key = 'N' or: [Key = 'n']) ifTrue: [val:= '-.'].
+		(Key = 'O' or: [Key = 'o']) ifTrue: [val:= '---'].
+		(Key = 'P' or: [Key = 'p']) ifTrue: [val:= '.--.'].
+		(Key = 'Q' or: [Key = 'q']) ifTrue: [val:= '--.-'].
+		(Key = 'R' or: [Key = 'r']) ifTrue: [val:= '.-.'].
+		(Key = 'S' or: [Key = 's']) ifTrue: [val:= '...'].
+		(Key = 'T' or: [Key = 't']) ifTrue: [val:= '-'].
+		(Key = 'U' or: [Key = 'u']) ifTrue: [val:= '..-'].
+		(Key = 'V' or: [Key = 'v']) ifTrue: [val:= '...-'].
+		(Key = 'W' or: [Key = 'w']) ifTrue: [val:= '.--'].
+		(Key = 'X' or: [Key = 'x']) ifTrue: [val:= '-..-'].
+		(Key = 'Y' or: [Key = 'y']) ifTrue: [val:= '-.--'].
+	
+		(Key = '0') ifTrue: [val:= '-----'].
+		(Key = '1') ifTrue: [val:= '.----'].
+		(Key = '2') ifTrue: [val:= '..---'].
+		(Key = '3') ifTrue: [val:= '...--'].
+		(Key = '4') ifTrue: [val:= '....-'].
+		(Key = '5') ifTrue: [val:= '.....'].
+		(Key = '6') ifTrue: [val:= '-....'].
+		(Key = '7') ifTrue: [val:= '--...'].
+		(Key = '8') ifTrue: [val:= '---..'].
+		(Key = '9') ifTrue: [val:= '----.'].
+
+		(Key = ' ') ifTrue: [val:= '    '].
+		(Key = '.') ifTrue: [val:= '.-.-.-'].
+		(Key = ',') ifTrue: [val:= '--.--'].
+		(Key = '?') ifTrue: [val:= '..--..'].
+		(Key = '!') ifTrue: [val:= '.----.'].
+		
+	]
+
+	display [ Transcript display: val]
+	
+]
+
+MorseChar class extend [
+	new: Key [ ^super new init: Key]
+]
+
+Collection subclass: #MyMorse.
+MyMorse instanceVariableNames: 'list'.
+MyMorse extend [
+	init: word [
+		list:= OrderedCollection new. 
+		word do: [:ch | self insert: ch. ]
+	]
+
+	insert: val [
+		|m|
+		m:= MorseChar new: val asString. 
+		list addLast: m.
+	]
+
+	remove [list isEmpty ifTrue: [^nil] ifFalse: [^list removeFirst] ]
+	display [list do: [:x | x display. Transcript show: '  '] ]
+
+	do: aBlock [list do: aBlock ]
+
+	collect: aBlock [
+		| q |
+		q:= MyMorse2 new.
+		self do: [:key | q insert: (aBlock value: key)].
+		^q
+	]
+]
+
+MyMorse class extend [
+	new: word [ ^super new init: word]
+]
 
 
 "Standard Stack: FILO push to top, pop from top"
@@ -347,6 +434,21 @@ MyMath extend [
 "'Main' Calls"
 
 Transcript cr.
+Transcript show: 'MorseChar'.
+Transcript cr.
+a:= MorseChar new: 'a'.
+a display.
+Transcript cr.
+
+Transcript cr.
+Transcript show: 'MorseWord: Lorem Ipsum'.
+Transcript cr.
+b:= MyMorse new: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam gravida auctor pulvinar. Integer erat odio, ultrices ut diam sit amet, porttitor pretium enim. Mauris a augue augue. Aenean viverra rhoncus enim a pulvinar. Nulla id sem justo. Suspendisse potenti. Duis eget enim in sem sodales fringilla id vitae nisi. Aenean tortor odio, posuere sit amet tincidunt eget, pretium sed felis. Phasellus enim mauris, laoreet non orci ut, efficitur dignissim nibh. In id aliquet tellus. Sed a tincidunt augue. Pellentesque eu dignissim metus. Mauris venenatis pulvinar enim vitae rhoncus.'.
+b display.
+Transcript cr.
+
+
+Transcript cr.
 Transcript show: 'MyQueue2:'.
 Transcript cr.
 q:= MyQueue2 new.
@@ -407,7 +509,6 @@ Transcript cr.
 Transcript display: (q detect: [:x | x > 50] ifNone: [99]); cr.
 Transcript cr.
 
-"
 Transcript show: 'MyQueue1:'.
 Transcript cr.
 q:= MyQueue1 new.
@@ -472,10 +573,67 @@ Transcript display: a. Transcript show: ' ^ '. Transcript display: b. Transcript
 x:= m pow.
 Transcript cr.
 
-Transcript show: 'Generated List: '.
+Transcript cr.
+Transcript show: 'Generated Lists: '.
 Transcript cr.
 col:= ((1 to: 25) select: [:x| (x*x) > 3]) collect: [:x | (x*2)].
+col2:= ((1 to: 25) select: [:x| (x*x) > 3]) collect: [:x | (x*3)].
 Transcript display: col.
 Transcript cr.
+Transcript cr.
+Transcript display: col2.
+Transcript cr.
 
-"
+Transcript cr.
+Transcript show: 'Inspecting Generated List '.
+Transcript cr.
+col inspect.
+Transcript cr.
+
+Transcript cr.
+Transcript show: 'Detecting Generated List with invalid boolean'.
+Transcript cr.
+col detect: [:x | x<0 ] ifNone: [Transcript show: 'None detected'].
+Transcript cr.
+Transcript cr.
+Transcript show: 'Detecting Generated List with valid boolean'.
+Transcript cr.
+c:= col detect: [:x | x>10 ] ifNone: [Transcript show: 'None detected'].
+Transcript display: c.
+Transcript cr.
+ 
+Transcript cr.
+Transcript show: 'Collecting Generated List x*x'.
+Transcript cr.
+d:= col collect: [:x | x*x].
+Transcript display: d.
+Transcript cr.
+
+Transcript cr.
+Transcript show: 'Selecting Generated List x % 3 = 0 (This is \\ in smalltalk)'.
+Transcript cr.
+e:= col select: [:x | x \\ 3 = 0 ].
+Transcript display: e.
+Transcript cr.
+
+Transcript cr.
+Transcript show: 'Rejecting Generated List x % 3 = 0 (This is \\ in smalltalk)'.
+Transcript cr.
+f:= col reject: [:x | x \\ 3 = 0 ].
+Transcript display: f.
+Transcript cr.
+
+
+Transcript cr.
+Transcript show: 'Collecting col2 if in col '.
+Transcript cr.
+g:= col select: [:x | col2 includes: x].
+Transcript display: g.
+Transcript cr.
+
+Transcript cr.
+Transcript show: 'Injecting Generated List with a+b: '.
+Transcript cr.
+Transcript display: (col inject: 0 into: [:a :b | a+b]); cr.
+Transcript cr.
+
